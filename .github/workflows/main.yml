@@ -39,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: release-artifact
-          path: build/linux/release/bundle
+          path: build/linux/x64/release/bundle/
 
   # flutter_build_windows:
   #   name: "Flutter build (Windows)"
