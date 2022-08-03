@@ -19,18 +19,19 @@ class NotesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: constrain.maxHeight,
-        width: constrain.maxWidth * 0.4,
-        child: ListView.builder(
-          itemCount: value.notesList.length,
-          itemBuilder: (context, index) {
-            final notes = value.notesList[index];
-            return NotesTile(
-              notes: notes,
-              selectedNote: notesSelected,
-              deletedNote: deletedNote,
-            );
-          },
-        ),);
+      height: constrain.maxHeight,
+      width: constrain.maxWidth * 0.4,
+      child: ListView.builder(
+        itemCount: value.notesList.length,
+        itemBuilder: (context, index) {
+          final notes = value.notesList[index];
+          return NotesTile(
+            notes: notes,
+            selectedNote: notesSelected,
+            deletedNote: deletedNote,
+          );
+        },
+      ),
+    );
   }
 }
