@@ -50,7 +50,7 @@ void main() {
       home: Scaffold(
         body: ChangeNotifierProvider(
             create: (context) => NotesProvider(mockNotesRepoImpl),
-            child: ListViewPage()),
+            child: const ListViewPage()),
       ),
     );
   });
@@ -78,7 +78,7 @@ void main() {
           //  widgetTester.widget<EditableText>(find.byKey(Key(note.id.toString())));
           //final textfield = (TextFormField) find.byKey(Key(note.id.toString())).evaluate().first.widget;
           expect(find.text(note.category!), findsOneWidget);
-          expect(find.byKey(Key(note.id.toString() + '-colour-category-key')),
+          expect(find.byKey(Key('${note.id}-colour-category-key')),
               findsOneWidget);
           find.byType(ListTile).first.hitTestable();
         }
@@ -88,7 +88,8 @@ void main() {
     );
     testWidgets('Test The Right Side', (tester) async {
       await tester.pumpWidget(widgetToTest);
-      expect(find.byKey(Key('EDIT_NOTE')), findsOneWidget);
+      expect(
+          find.byKey(const Key('EDIT_NOTE_TEXT_FORM_FIELD')), findsOneWidget);
     });
   });
 }

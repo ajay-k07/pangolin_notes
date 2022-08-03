@@ -62,7 +62,8 @@ void main() {
 
     when(() => mockNotesRepoImpl.saveNotes(note: any(named: 'note')))
         .thenAnswer((invocation) {
-      Notes localnote = invocation.namedArguments[Symbol('note')] as Notes;
+      Notes localnote =
+          invocation.namedArguments[const Symbol('note')] as Notes;
       if (localnote.id == 0) {
         localnote = localnote.copyWith(id: notesList.length + 1);
       }
@@ -72,7 +73,8 @@ void main() {
 
     when(() => mockNotesRepoImpl.updateNotes(note: any(named: 'note')))
         .thenAnswer((invocation) {
-      Notes localnote = invocation.namedArguments[Symbol('note')] as Notes;
+      Notes localnote =
+          invocation.namedArguments[const Symbol('note')] as Notes;
 
       notesList[notesList.indexWhere((element) => element.id == localnote.id)] =
           localnote;
@@ -81,7 +83,7 @@ void main() {
 
     when(() => mockNotesRepoImpl.deleteNotes(id: any<int>(named: 'id')))
         .thenAnswer((invocation) {
-      int id = invocation.namedArguments[Symbol('id')];
+      int id = invocation.namedArguments[const Symbol('id')];
       notesList.removeWhere((element) => element.id == id);
       return true;
     });
@@ -114,9 +116,9 @@ void main() {
       await tester.tap(find.text(note.title!));
       await tester.pumpAndSettle();
 
-      final formfield = find.byKey(Key('EDIT_NOTE_TEXT_FORM_FIELD'));
+      final formfield = find.byKey(const Key('EDIT_NOTE_TEXT_FORM_FIELD'));
 
-      final inputText = 'new body 2';
+      const inputText = 'new body 2';
 
       await tester.enterText(formfield, inputText);
 
@@ -134,9 +136,9 @@ void main() {
 
     testWidgets('add new note', (tester) async {
       await tester.pumpWidget(widgetToTest);
-      final formfield = find.byKey(Key('EDIT_NOTE_TEXT_FORM_FIELD'));
+      final formfield = find.byKey(const Key('EDIT_NOTE_TEXT_FORM_FIELD'));
 
-      final inputText = 'new note created';
+      const inputText = 'new note created';
       await tester.enterText(formfield, inputText);
       await tester.pumpAndSettle();
       expect(find.text(inputText), findsOneWidget);
@@ -145,14 +147,14 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(inputText), findsOneWidget);
-      await tester.pumpAndSettle(Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
     });
 
     testWidgets('delete note', (tester) async {
       await tester.pumpWidget(widgetToTest);
-      final formfield = find.byKey(Key('EDIT_NOTE_TEXT_FORM_FIELD'));
+      final formfield = find.byKey(const Key('EDIT_NOTE_TEXT_FORM_FIELD'));
 
-      final inputText = 'delete note test';
+      const inputText = 'delete note test';
       await tester.enterText(formfield, inputText);
       await tester.pumpAndSettle();
       expect(find.text(inputText), findsOneWidget);
@@ -161,7 +163,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(inputText), findsOneWidget);
-      await tester.pumpAndSettle(Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       await tester.tap(find.byIcon(Icons.delete).last);
       await tester.pumpAndSettle();
@@ -170,7 +172,7 @@ void main() {
         expect(find.text(notes.title!), findsOneWidget);
       }
 
-      await tester.pumpAndSettle(Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
     });
 
     testWidgets('go to settings page and come back to main page',

@@ -139,7 +139,7 @@ class _ListViewPageState extends State<ListViewPage> with WindowListener {
                     ),
                     Expanded(
                       child: TextFormField(
-                        key: Key('EDIT_NOTE_TEXT_FORM_FIELD'),
+                        key: const Key('EDIT_NOTE_TEXT_FORM_FIELD'),
                         style: Theme.of(context).textTheme.bodyLarge,
                         controller: _controller,
                         maxLines: constrain.maxHeight.toInt(),

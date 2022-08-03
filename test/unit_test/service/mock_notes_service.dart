@@ -26,6 +26,12 @@ class MockNotesService extends Mock implements NotesService {
   }
 
   @override
+  int updateNote({required Notes note}) {
+    db[db.indexWhere((element) => element.id == note.id)] = note;
+    return note.id!;
+  }
+
+  @override
   bool deleteNote({required int id}) {
     int isremoved = db.length;
     db.removeWhere((element) => element.id == id);

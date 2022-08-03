@@ -1,33 +1,33 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pangolin_notes/Provider/notes_provider.dart';
 import 'package:pangolin_notes/model/notes.dart';
-import 'package:pangolin_notes/repository/notes_repository.dart';
-import 'package:pangolin_notes/repository/notes_repository_impl.dart';
-import 'package:pangolin_notes/service/notes_service.dart';
 
 import '../service/mock_notes_service.dart';
+import '../service/mock_notes_repo.dart';
 
 void main() {
   group('Notes Provider Test', () {
-    final _notes = Notes();
-    late NotesService mockService;
-    late NotesRepository notesRepoImpl;
+    final notes = Notes();
+    late MockNotesService mockService;
+    late MockNotesRepo mockNotesRepo;
     late NotesProvider notesProvider;
 
     setUp(() {
       mockService = MockNotesService();
-      notesRepoImpl = NotesRepoImpl(notesSevice: mockService);
-      notesProvider = NotesProvider(notesRepoImpl);
+      mockNotesRepo = MockNotesRepo(
+        notesSevice: mockService,
+      );
+      notesProvider = NotesProvider(mockNotesRepo);
     });
 
     test('Save', () {
       notesProvider.getAllNotes();
-      int _oldLen = notesProvider.notesList.length;
-      notesProvider.saveNotes(_notes);
-      int _newLen = notesProvider.notesList.length;
-      expect(_newLen, _oldLen + 1);
-      final _lastElement = notesProvider.notesList.last.id;
-      expect(_lastElement, _notes.copyWith(id: _newLen + 1).id);
+      int oldLen = notesProvider.notesList.length;
+      notesProvider.saveNotes(notes);
+      int newLen = notesProvider.notesList.length;
+      expect(newLen, oldLen + 1);
+      final lastElement = notesProvider.notesList.last.id;
+      expect(lastElement, notes.copyWith(id: newLen + 1).id);
     });
     test('Update Body', () {
       notesProvider.getAllNotes();

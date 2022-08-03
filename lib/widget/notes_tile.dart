@@ -68,7 +68,7 @@ class NotesTile extends StatelessWidget {
 
   IconButton categoryColour(BuildContext context) {
     return IconButton(
-      key: Key(notes.id.toString() + '-colour-category-key'),
+      key: Key('${notes.id}-colour-category-key'),
       icon: Icon(
         Icons.circle,
         size: 20,

@@ -1,0 +1,71 @@
+on:
+  pull_request:
+  push:
+
+name: Build
+
+jobs:
+  flutter_test:
+    name: "Flutter Analyze and Test"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "11.x"
+      - run: flutter pub get
+      - run: flutter format --set-exit-if-changed
+      - run: flutter analyze
+      - run: flutter test
+
+  flutter_build_linux:
+    name: "Flutter build (Linux)"
+    needs: [flutter_test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev
+      - run: flutter config --enable-linux-desktop
+      - run: flutter build linux --release
+      - uses: actions/upload-artifact@v1
+        with:
+          name: release-artifact
+          path: build/linux/release/bundle
+
+  # flutter_build_windows:
+  #   name: "Flutter build (Windows)"
+  #   needs: [flutter_test]
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "beta"
+  #     - run: flutter config --enable-windows-desktop
+  #     - run: flutter build windows --release
+  #     - uses: actions/upload-artifact@v1
+  #       with:
+  #         name: release-apk
+  #         path: build/app/outputs/apk/release/app-release.apk
+
+  # flutter_build_macos:
+  #   name: "Flutter build (Windows)"
+  #   needs: [flutter_test]
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable"
+  #         architecture: x64
+  #     - run: flutter config --enable-macos-desktop
+  #     - run: flutter build macos --release
+  #     - uses: actions/upload-artifact@v1
+  #       with:
+  #         name: release-apk
+  #         path: build/app/outputs/apk/release/app-release.apk

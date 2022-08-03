@@ -12,7 +12,7 @@ class ObjectBoxNotesSevice implements NotesService {
       ObjectBoxNotesSevice._privateConstructor();
 
   static late ObjectBoxInterface _objectbox;
-  static late Store store = _objectbox.store;
+  static Store store = _objectbox.store;
   final notesBox = store.box<Notes>();
 
   static Future<void> setup() async {
