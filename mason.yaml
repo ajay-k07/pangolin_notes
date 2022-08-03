@@ -1,0 +1,7 @@
+# Register bricks which can be consumed via the Mason CLI.
+# https://github.com/felangel/mason
+bricks:
+   dahliaos_app_template:
+     git:
+       url: https://github.com/dahliaOS/app_template.git
+       path: template/dahliaos_app_template
