@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:pangolin_notes/Provider/notes_provider.dart';
-import 'package:pangolin_notes/widget/notes_grid_tile.dart';
 import 'package:pangolin_notes/widget/notes_tile.dart';
 
 class NotesList extends StatelessWidget {
@@ -21,7 +20,7 @@ class NotesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         height: constrain.maxHeight,
-        width: constrain.maxWidth * 0.25,
+        width: constrain.maxWidth * 0.4,
         child: ListView.builder(
           itemCount: value.notesList.length,
           itemBuilder: (context, index) {
@@ -32,6 +31,6 @@ class NotesList extends StatelessWidget {
               deletedNote: deletedNote,
             );
           },
-        ));
+        ),);
   }
 }

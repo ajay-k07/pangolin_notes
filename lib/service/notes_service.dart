@@ -6,4 +6,5 @@ abstract class NotesService {
   List<Notes> getAllNotes();
   int updateNote({required Notes note});
   bool deleteNote({required int id});
+  static Future<void> close() async {}
 }

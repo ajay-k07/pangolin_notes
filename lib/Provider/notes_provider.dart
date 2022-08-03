@@ -1,34 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:pangolin_notes/model/notes.dart';
-import 'package:pangolin_notes/service/objectbox_notes_service_impl.dart';
+import 'package:pangolin_notes/repository/notes_repository.dart';
 
 class NotesProvider extends ChangeNotifier {
-  final ObjectBoxNotesSevice _notesSevice;
-  NotesProvider(this._notesSevice);
+  final NotesRepository _notesRepository;
+  NotesProvider(this._notesRepository);
 
   List<Notes> get notesList => [..._notesList];
   List<Notes> _notesList = [];
+
   Notes saveNotes(Notes notes) {
     final readyToSave = notes.copyWith(
       title: notes.body!.isNotEmpty ? notes.body!.split('\n')[0] : notes.title,
       lastEdit: DateTime.now(),
     );
-    final id = _notesSevice.saveNote(note: readyToSave);
+    int id;
+    if (notes.id == 0) {
+      id = _notesRepository.saveNotes(note: readyToSave);
+    } else {
+      id = _notesRepository.updateNotes(note: readyToSave);
+    }
     getAllNotes();
     notifyListeners();
     return notes.copyWith(id: id);
   }
 
   void getAllNotes() {
-    final ordered = _notesSevice.getAllNotes();
-    ordered.sort(
-      (a, b) => b.lastEdit!.compareTo(a.lastEdit!),
-    );
+    final ordered = _notesRepository.getAllNotes()!;
     _notesList = ordered;
   }
 
   void deleteNotes(Notes notes) {
-    _notesSevice.deleteNote(id: notes.id!);
+    _notesRepository.deleteNotes(id: notes.id!);
     getAllNotes();
     notifyListeners();
   }

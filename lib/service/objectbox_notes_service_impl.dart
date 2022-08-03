@@ -19,6 +19,12 @@ class ObjectBoxNotesSevice implements NotesService {
     _objectbox = await ObjectBoxInterface.create();
   }
 
+  static Future<void> close() async {
+    if (!_objectbox.store.isClosed()) {
+      _objectbox.store.close();
+    }
+  }
+
   @override
   int saveNote({required Notes note}) {
     return notesBox.put(note);

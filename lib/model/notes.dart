@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
+// ignore: must_be_immutable
 class Notes extends Equatable {
   @Id(assignable: false)
   int? id;

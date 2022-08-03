@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 class NotesTile extends StatelessWidget {
   final Function selectedNote;
   final Function deletedNote;
-  const NotesTile({
+
+  NotesTile({
     Key? key,
     required this.selectedNote,
     required this.notes,
@@ -16,7 +17,7 @@ class NotesTile extends StatelessWidget {
   }) : super(key: key);
 
   final Notes notes;
-
+  final FocusNode categoryFocusNode = FocusNode();
   void upDateNotes(Notes notes, BuildContext context) {
     Provider.of<NotesProvider>(context, listen: false).saveNotes(notes);
   }
@@ -51,6 +52,7 @@ class NotesTile extends StatelessWidget {
 
   TextFormField categoryField(BuildContext context) {
     return TextFormField(
+      key: Key(notes.id.toString()),
       style: Theme.of(context).textTheme.titleSmall,
       initialValue: notes.category,
       onChanged: (value) {
@@ -66,6 +68,7 @@ class NotesTile extends StatelessWidget {
 
   IconButton categoryColour(BuildContext context) {
     return IconButton(
+      key: Key(notes.id.toString() + '-colour-category-key'),
       icon: Icon(
         Icons.circle,
         size: 20,

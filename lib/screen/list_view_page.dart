@@ -1,28 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:pangolin_notes/Provider/notes_provider.dart';
 import 'package:pangolin_notes/model/notes.dart';
+import 'package:pangolin_notes/screen/settings.dart';
+import 'package:pangolin_notes/service/objectbox_notes_service_impl.dart';
 import 'package:pangolin_notes/widget/notes_list.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 class ListViewPage extends StatefulWidget {
-  const ListViewPage(
-      {super.key, required this.selectListView, required this.isListView});
-  final bool isListView;
-  final Function selectListView;
+  const ListViewPage({super.key});
 
   @override
   State<ListViewPage> createState() => _ListViewPageState();
 }
 
-class _ListViewPageState extends State<ListViewPage> {
+class _ListViewPageState extends State<ListViewPage> with WindowListener {
   Notes _selectedNotes = Notes();
 
   final TextEditingController _controller = TextEditingController();
+
+  void getAllNotes() {
+    Provider.of<NotesProvider>(context, listen: false).getAllNotes();
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Provider.of<NotesProvider>(context, listen: false).getAllNotes();
+    windowManager.addListener(this);
+    getAllNotes();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    windowManager.removeListener(this);
+  }
+
+  @override
+  void onWindowClose() {
+    final note = _selectedNotes.copyWith(body: _controller.text);
+    upDate(note, context);
+    ObjectBoxNotesSevice.close();
   }
 
   Notes upDate(Notes notes, BuildContext context) {
@@ -35,7 +53,7 @@ class _ListViewPageState extends State<ListViewPage> {
       if (oldNote.body!.isNotEmpty) {
         upDate(oldNote, context);
       }
-      final newNote = upDate(Notes(title: 'New Note'), context);
+      final newNote = upDate(Notes(), context);
       _selectedNotes = newNote;
       _controller.text = _selectedNotes.body!;
     });
@@ -67,6 +85,7 @@ class _ListViewPageState extends State<ListViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
               decoration: BoxDecoration(
@@ -77,58 +96,29 @@ class _ListViewPageState extends State<ListViewPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    color: widget.isListView
-                        ? Colors.orange.shade100
-                        : Colors.white,
                     onPressed: () {
-                      widget.selectListView(true);
+                      newNote();
                     },
                     icon: const Icon(
-                      Icons.list,
+                      Icons.add,
                     ),
                     iconSize: 30,
                   ),
                   IconButton(
-                    color: widget.isListView
-                        ? Colors.orange.shade100
-                        : Colors.white,
+                    color: Colors.white,
                     onPressed: () {
-                      widget.selectListView(false);
+                      Navigator.pushNamed(context, SettingsPage.routeName);
                     },
                     icon: const Icon(
-                      Icons.grid_view_rounded,
+                      Icons.settings,
                     ),
+                    iconSize: 30,
                   ),
                 ],
               ),
             )
           ],
         ),
-        actions: [
-          Container(
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.black12,
-            ),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      newNote();
-                    });
-                  },
-                  icon: const Icon(Icons.add_comment_outlined),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.mic_none),
-                )
-              ],
-            ),
-          ),
-        ],
       ),
       body: Consumer<NotesProvider>(
         builder: (context, value, child) {
@@ -149,6 +139,7 @@ class _ListViewPageState extends State<ListViewPage> {
                     ),
                     Expanded(
                       child: TextFormField(
+                        key: Key('EDIT_NOTE_TEXT_FORM_FIELD'),
                         style: Theme.of(context).textTheme.bodyLarge,
                         controller: _controller,
                         maxLines: constrain.maxHeight.toInt(),
