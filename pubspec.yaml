@@ -54,7 +54,7 @@ dev_dependencies:
   lints: ^2.0.0
   mocktail: ^0.3.0
   test:
-  test_api: 0.4.9
+  test_api: ^0.4.12
   objectbox_generator: any
   flutter_lints: ^2.0.1
 
