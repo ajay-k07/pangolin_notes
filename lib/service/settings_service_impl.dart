@@ -2,6 +2,7 @@ import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefSettingsService {
+  static const String showOnBoardingScreenKey = 'showOnBoardingScreenKey';
   static const String backgroundEffectKey = 'backgroundEffectKey';
   static late SharedPreferences _preferences;
   factory SharedPrefSettingsService() {
@@ -25,6 +26,15 @@ class SharedPrefSettingsService {
 
   String? getString(String key) {
     return _preferences.getString(key);
+  }
+
+  bool showOnBoardingScreen() {
+    final val = _preferences.getBool(showOnBoardingScreenKey) ?? true;
+    return val;
+  }
+
+  Future<void> onBoardingScreenCompleted() async {
+    await _preferences.setBool(showOnBoardingScreenKey, false);
   }
 
   WindowEffect getWindowEffect() {

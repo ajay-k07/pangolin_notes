@@ -38,7 +38,7 @@ jobs:
       - run: flutter build linux --release
       - uses: actions/upload-artifact@v1
         with:
-          name: release-artifact
+          name: linux-release
           path: build/linux/x64/release/bundle/
 
   # flutter_build_windows:

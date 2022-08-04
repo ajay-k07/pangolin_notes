@@ -139,13 +139,21 @@ class _ListViewPageState extends State<ListViewPage> with WindowListener {
                     ),
                     Expanded(
                       child: TextFormField(
+                        cursorHeight: 20,
+                        cursorWidth: 2,
+                        cursorColor: Colors.white,
+                        showCursor: true,
                         key: const Key('EDIT_NOTE_TEXT_FORM_FIELD'),
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.titleMedium,
                         controller: _controller,
                         maxLines: constrain.maxHeight.toInt(),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          isDense: true,
                           hintText: 'Start Typing Here',
-                          border: OutlineInputBorder(
+                          hintStyle: Theme.of(context).textTheme.titleMedium,
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                         ),
